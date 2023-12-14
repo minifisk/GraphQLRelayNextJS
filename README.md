@@ -2,6 +2,8 @@
 
 A simple app to illustrate how Relay works with NextJS 13, and how can compile the needed data from separate components into one general, optimized query.
 
+Heavily inspired by: https://github.com/Roshanjossey/nextjs-13-relay by https://github.com/Roshanjossey
+
 
 ### 1. Install dependencies
 ```bash
