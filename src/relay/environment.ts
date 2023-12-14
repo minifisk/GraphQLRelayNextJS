@@ -38,8 +38,6 @@ import {
       }),
     });
     const json = await resp.json();
-
-    console.log('request.name', request.name)
   
     // GraphQL returns exceptions (for example, a missing required variable) in the "errors"
     // property of the response. If any exceptions occurred when processing the request,
