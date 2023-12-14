@@ -55,7 +55,7 @@ function MainView(props: { queryRef: PreloadedQuery<MainViewQuery> }) {
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <p className="text-2xl text-gray-600 mb-10 max-w-xl text-center">
         The following data has been fetched from GitHub by using GraphQL and
-        Relay and display the name, description and link to a GitHub repository
+        Relay. The data is used to display the name, description and link to a GitHub repository.
       </p>
 
       <div
