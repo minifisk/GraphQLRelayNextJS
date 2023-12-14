@@ -1,0 +1,13 @@
+{
+  "root": ".",
+  "excludes": ["**/node_modules/**"],
+  "sources": {
+      "": "myProject"
+  },
+  "projects": {
+      "myProject": {
+          "schema": "schema.graphql",
+          "language": "typescript"
+      }
+  }
+}
