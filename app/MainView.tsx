@@ -16,6 +16,7 @@ import useSerializablePreloadedQuery from "../src/relay/useSerializablePreloaded
 import Link from "next/link";
 import RepositoryName from "./RepositoryName";
 import RepositoryDetails from "./RepositoryDetails";
+import CustomLoading from "./CustomLoading";
 
 const MainViewClientComponent = (props: {
   preloadedQuery: SerializablePreloadedQuery<
@@ -31,7 +32,7 @@ const MainViewClientComponent = (props: {
 
   return (
     <RelayEnvironmentProvider environment={environment}>
-      <Suspense fallback="Loading...">
+      <Suspense fallback={<CustomLoading />}>
         <MainView queryRef={queryRef} />
       </Suspense>
     </RelayEnvironmentProvider>
