@@ -1,5 +1,8 @@
 # [Next.js 13](https://beta.nextjs.org/) with [Relay](https://relay.dev/)
 
+A simple app to illustrate how Relay works with NextJS 13, and how can compile the needed data from separate components into one general, optimized query.
+
+
 ### 1. Install dependencies
 ```bash
 npm install
@@ -15,7 +18,7 @@ NEXT_PUBLIC_REACT_APP_GITHUB_AUTH_TOKEN=<token you create above>
 ```
 
 ### 3. Generate the queries
-Run the command to compile which requests need to be called for the nested components
+Run the command to compile which requests need to be called for the nested components. This will be placed in the __generated__ folder, and be kind of like the "blueprint" of which requests that need to be made for your app.
 ```bash
 npm run relay
 ```
