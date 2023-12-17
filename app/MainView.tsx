@@ -44,19 +44,7 @@ const MainViewClientComponent = () => {
   );
 };
 
-const BooksQuery = graphql`
-    query MainViewQuery {
-      booksCollection {
-        edges {
-          node {
-            id
-            name
-            author
-          }
-        }
-      }
-    }
-  `;
+
 
 // function MainView(props: { queryRef: PreloadedQuery<MainViewQuery> }) {
 function MainView() {
@@ -73,6 +61,19 @@ function MainView() {
   // );
 
   
+  const BooksQuery = graphql`
+    query MainViewQuery {
+      booksCollection {
+        edges {
+          node {
+            id
+            name
+            author
+          }
+        }
+      }
+    }
+  `;
 
 const data = useLazyLoadQuery(BooksQuery, {});
 

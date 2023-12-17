@@ -18,7 +18,7 @@ const fetchQuery: FetchFunction = async (operation, variables) => {
     headers: {
       'Content-Type': 'application/json',
       apikey: process.env.SUPABASE_ANON_KEY,
-      Authorization: "Bearer process.env.SUPABASE_ANON_KEY}",
+      Authorization: `Bearer ${process.env.SUPABASE_ANON_KEY}`,
       // Authorization: `Bearer ${session?.access_token ?? process.env.SUPABASE_ANON_KEY}`,
 
     },
@@ -27,6 +27,10 @@ const fetchQuery: FetchFunction = async (operation, variables) => {
       variables,
     }),
   })
+
+  const reponseJson = await response.json()
+  console.log(reponseJson)
+  return reponseJson
 
   return await response.json()
 }
