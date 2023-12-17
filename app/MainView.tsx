@@ -42,7 +42,6 @@ const MainViewClientComponent = () => {
 };
 // function MainView(props: { queryRef: PreloadedQuery<MainViewQuery> }) {
 function MainView() {
-  
   // const data = usePreloadedQuery(
   //   graphql`
   //     query MainViewQuery($owner: String!, $name: String!) {
@@ -54,6 +53,20 @@ function MainView() {
   //   `,
   //   props.queryRef
   // );
+
+graphql`
+  query BooksQuery {
+    booksCollection {
+      edges {
+        node {
+          id
+          name
+          author
+        }
+      }
+    }
+  }
+  `;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">

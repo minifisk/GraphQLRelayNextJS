@@ -13,6 +13,14 @@ const Page = async () => {
   //   name: "comfyui_segment_anything",
   // });
 
+    // const preloadedQuery = await loadSerializableQuery<
+  //   typeof MainViewQueryNode,
+  //   MainViewQuery
+  // >(MainViewQueryNode.params, {
+  //   owner: "minifisk",
+  //   name: "comfyui_segment_anything",
+  // })
+
   return (
     <div>
       <MainViewClientComponent />
