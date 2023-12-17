@@ -1,6 +1,6 @@
 {
   "root": ".",
-  "excludes": ["**/node_modules/**"],
+  "excludes": ["**/node_modules/**", "**/__generated__/**", "graphql/queries/**"],
   "sources": {
       "": "myProject"
   },
