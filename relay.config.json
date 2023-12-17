@@ -6,6 +6,10 @@
   },
   "projects": {
       "myProject": {
+          "schemaConfig": {
+            "nodeInterfaceIdField": "nodeId",
+            "nodeInterfaceIdVariableName": "nodeId"
+          },
           "schema": "graphql/schema/schema.graphql",
           "language": "typescript"
       }
