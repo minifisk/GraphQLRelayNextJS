@@ -54,20 +54,19 @@ function MainView() {
   //   props.queryRef
   // );
 
-graphql`
-  query BooksQuery {
-    booksCollection {
-      edges {
-        node {
-          id
-          name
-          author
+  graphql`
+    query MainViewQuery {
+      booksCollection {
+        edges {
+          node {
+            id
+            name
+            author
+          }
         }
       }
     }
-  }
   `;
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <p className="text-2xl text-gray-600 mb-10 max-w-xl text-center">
