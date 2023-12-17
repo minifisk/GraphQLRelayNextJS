@@ -7,10 +7,20 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "relay": "relay-compiler"
+    "relay": "relay-compiler",
+    "codegen": "graphql-codegen",
+    "codegen:fetch": "node --no-warnings scripts/fetchGraphQLSchema",
+    "codegen:watch": "npm run codegen -- --watch"
   },
   "dependencies": {
+    "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/gql-tag-operations-preset": "^2.1.0",
+    "cross-undici-fetch": "^0.4.14",
+    "dotenv": "^16.3.1",
+    "gradient-string": "^2.0.2",
+    "graphql": "^16.8.1",
     "next": "14.0.4",
+    "progress": "^2.0.3",
     "react": "^18",
     "react-dom": "^18",
     "react-relay": "^0.0.0-main-fdf847e9",

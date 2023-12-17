@@ -6,7 +6,7 @@
   },
   "projects": {
       "myProject": {
-          "schema": "schema.graphql",
+          "schema": "graphql/schema/schema.graphql",
           "language": "typescript"
       }
   }

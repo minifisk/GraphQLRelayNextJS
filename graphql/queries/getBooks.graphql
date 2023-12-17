@@ -1,0 +1,11 @@
+query GetAllBooks {
+  booksCollection {
+    edges {
+      node {
+        id
+        name
+        author
+      }
+    }
+  }
+}

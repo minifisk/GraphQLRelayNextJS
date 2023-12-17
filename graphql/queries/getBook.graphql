@@ -1,0 +1,11 @@
+query GetBook($id: BigInt!) {
+  booksCollection(filter: { id: { eq: $id } }) {
+    edges {
+      node {
+        id
+        name
+        author
+      }
+    }
+  }
+}

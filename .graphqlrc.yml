@@ -1,0 +1,11 @@
+schema: ./graphql/schema/schema.graphql
+# documents: ./app/**/*.{graphql,js,ts,jsx,tsx}
+documents: ./graphql/queries/*.graphql
+extensions:
+  codegen:
+    generates:
+      ./app/gql:
+        preset: gql-tag-operations-preset
+    # hooks:
+    #   afterOneFileWrite:
+    #     - prettier --write
