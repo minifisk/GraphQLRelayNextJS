@@ -5,12 +5,15 @@ import { SerializablePreloadedQuery } from "../src/relay/loadSerializableQuery";
 // import MainViewQueryNode, {
 //   MainViewQuery,
 // } from "./__generated__/MainViewQuery.graphql";
-import { getCurrentEnvironment } from "../src/relay/environment";
+// import { getCurrentEnvironment } from "../src/relay/environment";
+import environment from "@/src/relay/environment";
+
 import {
   RelayEnvironmentProvider,
   graphql,
   PreloadedQuery,
   usePreloadedQuery,
+  useLazyLoadQuery,
 } from "react-relay";
 import useSerializablePreloadedQuery from "../src/relay/useSerializablePreloadedQuery";
 import Link from "next/link";
@@ -25,7 +28,7 @@ const MainViewClientComponent = () => {
   //     MainViewQuery
   //   >;
   // }) => {
-  const environment = getCurrentEnvironment();
+  // const environment = getCurrentEnvironment();
   // const queryRef = useSerializablePreloadedQuery(
   //   environment,
   //   props.preloadedQuery
@@ -40,6 +43,21 @@ const MainViewClientComponent = () => {
     </RelayEnvironmentProvider>
   );
 };
+
+const BooksQuery = graphql`
+    query MainViewQuery {
+      booksCollection {
+        edges {
+          node {
+            id
+            name
+            author
+          }
+        }
+      }
+    }
+  `;
+
 // function MainView(props: { queryRef: PreloadedQuery<MainViewQuery> }) {
 function MainView() {
   // const data = usePreloadedQuery(
@@ -54,33 +72,25 @@ function MainView() {
   //   props.queryRef
   // );
 
-  graphql`
-    query MainViewQuery {
-      booksCollection {
-        edges {
-          node {
-            id
-            name
-            author
-          }
-        }
-      }
-    }
-  `;
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <p className="text-2xl text-gray-600 mb-10 max-w-xl text-center">
-        The following data has been fetched from GitHub by using GraphQL and
-        Relay. The data is used to display the name, description and link to a
-        GitHub repository.
-      </p>
+  
 
-      <div className="border border-gray-200 rounded-lg p-4 max-w-xl w-full mx-auto">
-        {/* <RepositoryName fragmentRef={data.repository} /> */}
-        {/* <RepositoryDetails fragmentRef={data.repository} /> */}
-      </div>
+const data = useLazyLoadQuery(BooksQuery, {});
+
+return (
+  <div className="flex flex-col items-center justify-center min-h-screen py-2">
+    <p className="text-2xl text-gray-600 mb-10 max-w-xl text-center">
+      Here are the books fetched from the GraphQL server:
+    </p>
+    <div className="border border-gray-200 rounded-lg p-4 max-w-xl w-full mx-auto">
+      {data.booksCollection.edges.map(({ node }) => (
+        <div key={node.id} className="mb-4">
+          <p className="text-lg font-bold">{node.name}</p>
+          <p>Author: {node.author}</p>
+        </div>
+      ))}
     </div>
-  );
+  </div>
+);
 }
 
 export default MainViewClientComponent;
