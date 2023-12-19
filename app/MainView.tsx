@@ -6,7 +6,7 @@ import { SerializablePreloadedQuery } from "../src/relay/loadSerializableQuery";
 //   MainViewQuery,
 // } from "./__generated__/MainViewQuery.graphql";
 // import { getCurrentEnvironment } from "../src/relay/environment";
-import environment from "@/src/relay/environment";
+import environment, { getCurrentEnvironment } from "@/src/relay/environment";
 
 import {
   RelayEnvironmentProvider,
@@ -20,25 +20,28 @@ import Link from "next/link";
 import RepositoryName from "./RepositoryName";
 import RepositoryDetails from "./RepositoryDetails";
 import CustomLoading from "./CustomLoading";
+import MainViewQueryNode, {
+  MainViewQuery,
+} from "./__generated__/MainViewQuery.graphql";
 
-const MainViewClientComponent = () => {
-  // const MainViewClientComponent = (props: {
-  //   preloadedQuery: SerializablePreloadedQuery<
-  //     typeof MainViewQueryNode,
-  //     MainViewQuery
-  //   >;
-  // }) => {
-  // const environment = getCurrentEnvironment();
-  // const queryRef = useSerializablePreloadedQuery(
-  //   environment,
-  //   props.preloadedQuery
-  // );
+// const MainViewClientComponent = () => {
+  const MainViewClientComponent = (props: {
+    preloadedQuery: SerializablePreloadedQuery<
+      typeof MainViewQueryNode,
+      MainViewQuery
+    >;
+  }) => {
+  const environment = getCurrentEnvironment();
+  const queryRef = useSerializablePreloadedQuery(
+    environment,
+    props.preloadedQuery
+  );
 
   return (
     <RelayEnvironmentProvider environment={environment}>
       <Suspense fallback={<CustomLoading />}>
-        {/* <MainView queryRef={queryRef} /> */}
-        <MainView />
+        <MainView queryRef={queryRef} />
+        {/* <MainView /> */}
       </Suspense>
     </RelayEnvironmentProvider>
   );
@@ -46,8 +49,14 @@ const MainViewClientComponent = () => {
 
 
 
-// function MainView(props: { queryRef: PreloadedQuery<MainViewQuery> }) {
-function MainView() {
+function MainView(props: { queryRef: PreloadedQuery<MainViewQuery> }) {
+
+  const data = usePreloadedQuery(MainViewQueryNode, queryRef);
+
+  console.log('data', data)
+
+
+// function MainView() {
   // const data = usePreloadedQuery(
   //   graphql`
   //     query MainViewQuery($owner: String!, $name: String!) {
