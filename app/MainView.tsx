@@ -61,34 +61,37 @@ function MainView() {
   // );
 
   
-  const BooksQuery = graphql`
-    query MainViewQuery {
-      booksCollection {
-        edges {
-          node {
-            id
-            name
-            author
-          }
-        }
-      }
-    }
-  `;
+//   const BooksQuery = graphql`
+//     query MainViewQuery {
+//       booksCollection {
+//         edges {
+//           node {
+//             id
+//             name
+//             author
+//           }
+//         }
+//       }
+//     }
+//   `;
 
-const data = useLazyLoadQuery(BooksQuery, {});
+// console.log('HELLO')
+// const data = useLazyLoadQuery(BooksQuery, {});
+// const stringifiedData = JSON.stringify(data, null, 2);
+// console.log('stringifiedData', stringifiedData)
 
 return (
   <div className="flex flex-col items-center justify-center min-h-screen py-2">
     <p className="text-2xl text-gray-600 mb-10 max-w-xl text-center">
       Here are the books fetched from the GraphQL server:
-    </p>
+    </p>  
     <div className="border border-gray-200 rounded-lg p-4 max-w-xl w-full mx-auto">
-      {data.booksCollection.edges.map(({ node }) => (
+      {/* {data.booksCollection.edges.map(({ node }) => (
         <div key={node.id} className="mb-4">
           <p className="text-lg font-bold">{node.name}</p>
           <p>Author: {node.author}</p>
         </div>
-      ))}
+      ))} */}
     </div>
   </div>
 );
