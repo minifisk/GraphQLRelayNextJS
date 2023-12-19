@@ -13,6 +13,7 @@ const fetchQuery: FetchFunction = async (operation, variables) => {
   //   data: { session },
   // } = await supabase.auth.getSession()
 
+
   const response = await fetch(`${process.env.SUPABASE_URL}/graphql/v1`, {
     method: 'POST',
     headers: {
@@ -28,11 +29,13 @@ const fetchQuery: FetchFunction = async (operation, variables) => {
     }),
   })
 
-  const reponseJson = await response.json()
-  console.log(reponseJson)
-  return reponseJson
-
-  return await response.json()
+  const responseText = await response.text();
+  console.log('Response Text:', responseText);
+  
+  // Parse the JSON only if the response is actually JSON
+  const responseJson = JSON.parse(responseText);
+  // console.log('Response JSON:', responseJson);
+  return responseJson;
 }
 
 const network = Network.create(fetchQuery)
@@ -41,7 +44,7 @@ const store = new Store(new RecordSource())
 const environment = new Environment({
   network,
   store,
-  getDataID: (node) => node.nodeId,
+  getDataID: (node) => node.id,
   missingFieldHandlers: [
     {
       handle(field, _record, argValues) {
