@@ -24,6 +24,9 @@ export async function networkFetch(
     );
   }
 
+  const queryText = request.text || request.params?.text;
+
+
   const resp = await fetch(`${process.env.SUPABASE_URL}/graphql/v1`, {
     method: 'POST',
     headers: {
@@ -34,7 +37,7 @@ export async function networkFetch(
 
     },
     body: JSON.stringify({
-      query: request.params.text,
+      query: queryText,
       variables,
     }),
   })

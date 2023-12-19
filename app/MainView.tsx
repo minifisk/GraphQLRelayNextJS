@@ -24,13 +24,12 @@ import MainViewQueryNode, {
   MainViewQuery,
 } from "./__generated__/MainViewQuery.graphql";
 
-// const MainViewClientComponent = () => {
-  const MainViewClientComponent = (props: {
-    preloadedQuery: SerializablePreloadedQuery<
-      typeof MainViewQueryNode,
-      MainViewQuery
-    >;
-  }) => {
+const MainViewClientComponent = (props: {
+  preloadedQuery: SerializablePreloadedQuery<
+    typeof MainViewQueryNode,
+    MainViewQuery
+  >;
+}) => {
   const environment = getCurrentEnvironment();
   const queryRef = useSerializablePreloadedQuery(
     environment,
@@ -41,7 +40,6 @@ import MainViewQueryNode, {
     <RelayEnvironmentProvider environment={environment}>
       <Suspense fallback={<CustomLoading />}>
         <MainView queryRef={queryRef} />
-        {/* <MainView /> */}
       </Suspense>
     </RelayEnvironmentProvider>
   );
@@ -49,9 +47,9 @@ import MainViewQueryNode, {
 
 
 
-function MainView(props: { queryRef: PreloadedQuery<MainViewQuery> }) {
 
-  const data = usePreloadedQuery(MainViewQueryNode, queryRef);
+function MainView(props: { queryRef: PreloadedQuery<MainViewQuery> }) {
+  const data = usePreloadedQuery(MainViewQueryNode, props.queryRef);
 
   console.log('data', data)
 
