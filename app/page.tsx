@@ -7,6 +7,7 @@ import MainViewClientComponent from "./MainView";
 
 
 const Page = async () => {
+
   const preloadedQuery = await loadSerializableQuery(MainViewQueryNode, {});
 
   // const preloadedQuery = await loadSerializableQuery<

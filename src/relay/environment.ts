@@ -34,7 +34,7 @@ export async function networkFetch(
 
     },
     body: JSON.stringify({
-      query: request.text,
+      query: request.params.text,
       variables,
     }),
   })
