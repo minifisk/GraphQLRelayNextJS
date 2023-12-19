@@ -1,20 +1,30 @@
 import {
   Environment,
-  FetchFunction,
   Network,
   RecordSource,
   Store,
-} from 'relay-runtime'
+  RequestParameters,
+  QueryResponseCache,
+  Variables,
+  GraphQLResponse,
+  CacheConfig,
+} from "relay-runtime";
 
-// import supabase from './supabase'
+const IS_SERVER = typeof window === typeof undefined;
+const CACHE_TTL = 5 * 1000; // 5 seconds, to resolve preloaded results
 
-const fetchQuery: FetchFunction = async (operation, variables) => {
-  // const {
-  //   data: { session },
-  // } = await supabase.auth.getSession()
+export async function networkFetch(
+  request: RequestParameters,
+  variables: Variables
+): Promise<GraphQLResponse> {
+  const token = process.env.NEXT_PUBLIC_REACT_APP_GITHUB_AUTH_TOKEN;
+  if (token == null || token === "") {
+    throw new Error(
+      "This app requires a GitHub authentication token to be configured. See readme.md for setup details."
+    );
+  }
 
-
-  const response = await fetch(`${process.env.SUPABASE_URL}/graphql/v1`, {
+  const resp = await fetch(`${process.env.SUPABASE_URL}/graphql/v1`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -24,40 +34,74 @@ const fetchQuery: FetchFunction = async (operation, variables) => {
 
     },
     body: JSON.stringify({
-      query: operation.text,
+      query: request.text,
       variables,
     }),
   })
 
-  const responseText = await response.text();
-  console.log('Response Text:', responseText);
-  
-  // Parse the JSON only if the response is actually JSON
-  const responseJson = JSON.parse(responseText);
-  // console.log('Response JSON:', responseJson);
-  return responseJson;
+  const json = await resp.json();
+
+  // GraphQL returns exceptions (for example, a missing required variable) in the "errors"
+  // property of the response. If any exceptions occurred when processing the request,
+  // throw an error to indicate to the developer what went wrong.
+  if (Array.isArray(json.errors)) {
+    console.error(json.errors);
+    throw new Error(
+      `Error fetching GraphQL query '${
+        request.name
+      }' with variables '${JSON.stringify(variables)}': ${JSON.stringify(
+        json.errors
+      )}`
+    );
+  }
+
+  return json;
 }
 
-const network = Network.create(fetchQuery)
-const store = new Store(new RecordSource())
+export const responseCache: QueryResponseCache | null = IS_SERVER
+  ? null
+  : new QueryResponseCache({
+      size: 100,
+      ttl: CACHE_TTL,
+    });
 
-const environment = new Environment({
-  network,
-  store,
-  getDataID: (node) => node.id,
-  missingFieldHandlers: [
-    {
-      handle(field, _record, argValues) {
-        if (field.name === 'node' && 'nodeId' in argValues) {
-          // If field is node(nodeId: $nodeId), look up the record by the value of $nodeId
-          return argValues.nodeId
-        }
+function createNetwork() {
+  async function fetchResponse(
+    params: RequestParameters,
+    variables: Variables,
+    cacheConfig: CacheConfig
+  ) {
+    const isQuery = params.operationKind === "query";
+    const cacheKey = params.id ?? params.cacheID;
+    const forceFetch = cacheConfig && cacheConfig.force;
+    if (responseCache != null && isQuery && !forceFetch) {
+      const fromCache = responseCache.get(cacheKey, variables);
+      if (fromCache != null) {
+        return Promise.resolve(fromCache);
+      }
+    }
 
-        return undefined
-      },
-      kind: 'linked',
-    },
-  ],
-})
+    return networkFetch(params, variables);
+  }
 
-export default environment
+  const network = Network.create(fetchResponse);
+  return network;
+}
+
+function createEnvironment() {
+  return new Environment({
+    network: createNetwork(),
+    store: new Store(RecordSource.create()),
+    isServer: IS_SERVER,
+  });
+}
+
+export const environment = createEnvironment();
+
+export function getCurrentEnvironment() {
+  if (IS_SERVER) {
+    return createEnvironment();
+  }
+
+  return environment;
+}
