@@ -30,6 +30,8 @@ const MainViewClientComponent = (props: {
     MainViewQuery
   >;
 }) => {
+  // console.log('props.preloadedQuery', props.preloadedQuery)
+
   const environment = getCurrentEnvironment();
   const queryRef = useSerializablePreloadedQuery(
     environment,
@@ -45,63 +47,28 @@ const MainViewClientComponent = (props: {
   );
 };
 
-
-
-
 function MainView(props: { queryRef: PreloadedQuery<MainViewQuery> }) {
   const data = usePreloadedQuery(MainViewQueryNode, props.queryRef);
+  console.log("data", data);
 
-  console.log('data', data)
+  const stringifiedData = JSON.stringify(data, null, 2);
+  console.log("stringifiedData", stringifiedData);
 
-
-// function MainView() {
-  // const data = usePreloadedQuery(
-  //   graphql`
-  //     query MainViewQuery($owner: String!, $name: String!) {
-  //       repository(owner: $owner, name: $name) {
-  //         # ...RepositoryName_fragment
-  //         # ...RepositoryDetails_fragment
-  //       }
-  //     }
-  //   `,
-  //   props.queryRef
-  // );
-
-  
-//   const BooksQuery = graphql`
-//     query MainViewQuery {
-//       booksCollection {
-//         edges {
-//           node {
-//             id
-//             name
-//             author
-//           }
-//         }
-//       }
-//     }
-//   `;
-
-// console.log('HELLO')
-// const data = useLazyLoadQuery(BooksQuery, {});
-// const stringifiedData = JSON.stringify(data, null, 2);
-// console.log('stringifiedData', stringifiedData)
-
-return (
-  <div className="flex flex-col items-center justify-center min-h-screen py-2">
-    <p className="text-2xl text-gray-600 mb-10 max-w-xl text-center">
-      Here are the books fetched from the GraphQL server:
-    </p>  
-    <div className="border border-gray-200 rounded-lg p-4 max-w-xl w-full mx-auto">
-      {/* {data.booksCollection.edges.map(({ node }) => (
-        <div key={node.id} className="mb-4">
-          <p className="text-lg font-bold">{node.name}</p>
-          <p>Author: {node.author}</p>
-        </div>
-      ))} */}
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+      <p className="text-2xl text-gray-600 mb-10 max-w-xl text-center">
+        Here are the books fetched from the GraphQL server:
+      </p>
+      <div className="border border-gray-200 rounded-lg p-4 max-w-xl w-full mx-auto">
+        {data.booksCollection.edges.map(({ node }) => (
+          <div key={node.id} className="mb-4">
+            <p className="text-lg font-bold">{node.name}</p>
+            <p>Author: {node.author}</p>
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
 }
 
 export default MainViewClientComponent;

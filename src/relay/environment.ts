@@ -26,6 +26,16 @@ export async function networkFetch(
 
   const queryText = request.text || request.params?.text;
 
+  const supabaseURL = process.env.SUPABASE_URL;
+
+  if (supabaseURL == null) {
+    // return empty response 
+    return {
+      data: {},
+      errors: [],
+    };
+  }
+
 
   const resp = await fetch(`${process.env.SUPABASE_URL}/graphql/v1`, {
     method: 'POST',
